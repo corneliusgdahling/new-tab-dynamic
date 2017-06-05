@@ -1,13 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
+import ShortcutCard from '../Shortcuts/ShortcutCard/ShortcutCard'
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App" style={{ display: 'flex' }}>
-        <h1 style={{ margin: 'auto' }}>Hello</h1>
-      </div>
-    )
-  }
-}
+const App = () => (
+  <div className="App" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+    <ShortcutCard />
+  </div>
+)
 
 export default App
