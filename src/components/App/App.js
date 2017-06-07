@@ -1,10 +1,9 @@
 import React from 'react'
-import ShortcutCard from '../Shortcuts/ShortcutCard/ShortcutCard'
+import ShortcutCard from '../Shortcuts/ShortcutCard'
+import Background from '../Background/Background'
 
 const App = () => (
-  <div className="App" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-    <ShortcutCard />
-  </div>
+  <Background />
 )
 
 export default App
