@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Shortcuts from '../Shortcuts/Shortcuts'
+import './Background.css'
 
 class Background extends Component {
   constructor() {
@@ -7,7 +8,7 @@ class Background extends Component {
     this.state = {
       searchTerm: 'summer+sea',
       fetchUrl: '',
-      backgroundUrl: '',
+      backgroundUrl: localStorage.getItem('backgroundUrl') ? localStorage.getItem('backgroundUrl') : '',
     }
     this.getBackgroundUrl = this.getBackgroundUrl.bind(this)
   }
@@ -18,7 +19,12 @@ class Background extends Component {
 
   getBackgroundUrl() {
     this.fetchRequest()
-    .then(response => console.log(response.hits[0].pageURL))
+    .then(response => {
+      const x = response.hits[Math.round(Math.random() * 15)].webformatURL
+      this.setState({ backgroundUrl: x })
+      localStorage.setItem('backgroundUrl', x)
+    })
+    console.log('Background Url', this.state.backgroundUrl, typeof this.state.backgroundUrl)
   }
 
   fetchRequest() {
@@ -34,7 +40,7 @@ class Background extends Component {
 
   render() {
     return (
-      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', backgroundImage: "url(" + this.state.backgroundUrl + ")" }}>
+      <div className="gridContainer" style={{ backgroundImage: `url(${this.state.backgroundUrl})` }}>
         <Shortcuts />
         <button style={{ height: '40px', marginRight: '100px', marginTop: '400px' }} onClick={this.getBackgroundUrl}>Fetch!</button>
       </div>

@@ -38,7 +38,7 @@ class ShortcutCard extends Component {
       />,
     ]
     return (
-      <div>
+      <div style={{ maxWidth: '500px' }}>
         <MuiThemeProvider>
           <Card style={{ borderRadius: '15px' }}>
             <a href={this.state.cardUrl}>
