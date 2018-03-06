@@ -6,7 +6,7 @@ class Background extends Component {
   constructor() {
     super()
     this.state = {
-      searchTerm: 'summer+sea',
+      searchTerm: 'winter',
       fetchUrl: '',
       backgroundUrl: localStorage.getItem('backgroundUrl') ? localStorage.getItem('backgroundUrl') : '',
     }
@@ -20,7 +20,8 @@ class Background extends Component {
   getBackgroundUrl() {
     this.fetchRequest()
     .then(response => {
-      const x = response.hits[Math.round(Math.random() * 15)].webformatURL
+      console.log(response.hits, response.hits.length)
+      const x = response.hits[Math.round(Math.random() * response.hits.length-1)].webformatURL
       this.setState({ backgroundUrl: x })
       localStorage.setItem('backgroundUrl', x)
     })
