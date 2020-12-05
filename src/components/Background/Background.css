@@ -9,3 +9,7 @@
   -o-background-size: cover;
   background-size: cover;
 }
+
+.input {
+  margin: 20px;
+}

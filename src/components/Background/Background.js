@@ -1,51 +1,37 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import Shortcuts from '../Shortcuts/Shortcuts'
 import './Background.css'
 
-class Background extends Component {
-  constructor() {
-    super()
-    this.state = {
-      searchTerm: 'winter',
-      fetchUrl: '',
-      backgroundUrl: localStorage.getItem('backgroundUrl') ? localStorage.getItem('backgroundUrl') : '',
-    }
-    this.getBackgroundUrl = this.getBackgroundUrl.bind(this)
-  }
+const URL = 'https://pixabay.com/api/?key=5546451-397d91c91b993dc32692557b3&q='
 
-  componentWillMount() {
-    this.setState({ fetchUrl: 'https://pixabay.com/api/?key=5546451-397d91c91b993dc32692557b3&q=' + this.state.searchTerm + '&image_type=photo&pretty=true' })
-  }
+const URL_CONFIG = '&image_type=photo&pretty=true'
 
-  getBackgroundUrl() {
-    this.fetchRequest()
-    .then(response => {
-      console.log(response.hits, response.hits.length)
-      const x = response.hits[Math.round(Math.random() * response.hits.length-1)].webformatURL
-      this.setState({ backgroundUrl: x })
-      localStorage.setItem('backgroundUrl', x)
-    })
-    console.log('Background Url', this.state.backgroundUrl, typeof this.state.backgroundUrl)
-  }
-
-  fetchRequest() {
-    return fetch(this.state.fetchUrl, {
-      method: 'GET',
-      mode: 'cors',
-    })
-    .then(response => {
-      if (!response.ok) throw Error()
-      return response.json()
-    })
-  }
-
-  render() {
-    return (
-      <div className="gridContainer" style={{ backgroundImage: `url(${this.state.backgroundUrl})` }}>
-        <Shortcuts />
-        <button style={{ height: '40px', marginRight: '100px', marginTop: '400px' }} onClick={this.getBackgroundUrl}>Fetch!</button>
-      </div>
-    )
-  }
+const getBackgroundUrl = async searchTerm => {
+  console.log({searchTerm})
+  const response = await fetch(URL + searchTerm + URL_CONFIG, {
+    method: 'GET',
+    mode: 'cors',
+  })
+  if (!response.ok) throw Error()
+  const results = await response.json()
+  const url = results.hits[Math.round(Math.random() * results.hits.length - 1)].webformatURL
+  console.log('url', url)
+  return url
 }
-export default Background
+
+export const Background = () => {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [backgroundUrl, setBackgroundUrl] = useState('')
+
+  console.log('backgroundURL', backgroundUrl)
+
+  return (
+    <div className="gridContainer" style={{ backgroundImage: `url(${backgroundUrl})` }}>
+      <Shortcuts />
+      <div>
+      <input className="input" type="text" onChange={e => setSearchTerm(e.target.value)} />
+      <button style={{ height: '40px', marginRight: '100px', marginTop: '400px' }} onClick={async () => setBackgroundUrl(await getBackgroundUrl(searchTerm))}>Fetch!</button>
+      </div>
+    </div>
+  )
+}
