@@ -25,17 +25,22 @@ export const Background = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [backgroundUrl, setBackgroundUrl] = useState(localStorage.getItem('backgroundUrl') || '')
 
-  return (
-    <div className="gridContainer" style={{ backgroundImage: `url(${backgroundUrl})` }}>
-      <Shortcuts />
-      <div>
-      <input className="input" type="text" onChange={e => setSearchTerm(e.target.value)} />
-      <button style={{ height: '40px', marginRight: '100px', marginTop: '400px' }} onClick={async () => {
-        const url = await getBackgroundUrl(searchTerm)
-        setBackgroundUrl(url)
-        localStorage.setItem('backgroundUrl', url)
-      }}>Fetch!</button>
-      </div>
+  const setBackground = async searchTerm => {
+  const url = await getBackgroundUrl(searchTerm)
+  setBackgroundUrl(url)
+  localStorage.setItem('backgroundUrl', url)
+}
+
+return (
+  <div className="gridContainer" style={{ backgroundImage: `url(${backgroundUrl})` }}>
+    <Shortcuts />
+    <div>
+      <input className="input" type="text" onChange={e => setSearchTerm(e.target.value)} onKeyDown={async e => {
+        if (e.key !== 'Enter') return
+        setBackground(searchTerm)
+      }} />
+      <button style={{ height: '40px', marginRight: '100px', marginTop: '400px' }} onClick={async () => setBackground(searchTerm)}>Fetch!</button>
     </div>
-  )
+  </div>
+)
 }
