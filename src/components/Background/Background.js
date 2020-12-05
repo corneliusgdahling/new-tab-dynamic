@@ -36,8 +36,7 @@ return (
     <Shortcuts />
     <div>
       <input className="input" type="text" onChange={e => setSearchTerm(e.target.value)} onKeyDown={async e => {
-        if (e.key !== 'Enter') return
-        setBackground(searchTerm)
+        if (e.key === 'Enter') setBackground(searchTerm)
       }} />
       <button style={{ height: '40px', marginRight: '100px', marginTop: '400px' }} onClick={async () => setBackground(searchTerm)}>Fetch!</button>
     </div>
