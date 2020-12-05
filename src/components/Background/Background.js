@@ -21,7 +21,7 @@ const getBackgroundUrl = async searchTerm => {
 
 export const Background = () => {
   const [searchTerm, setSearchTerm] = useState('')
-  const [backgroundUrl, setBackgroundUrl] = useState('')
+  const [backgroundUrl, setBackgroundUrl] = useState(localStorage.getItem('backgroundUrl') || '')
 
   console.log('backgroundURL', backgroundUrl)
 
@@ -30,7 +30,11 @@ export const Background = () => {
       <Shortcuts />
       <div>
       <input className="input" type="text" onChange={e => setSearchTerm(e.target.value)} />
-      <button style={{ height: '40px', marginRight: '100px', marginTop: '400px' }} onClick={async () => setBackgroundUrl(await getBackgroundUrl(searchTerm))}>Fetch!</button>
+      <button style={{ height: '40px', marginRight: '100px', marginTop: '400px' }} onClick={async () => {
+        const url = await getBackgroundUrl(searchTerm)
+        setBackgroundUrl(url)
+        localStorage.setItem('backgroundUrl', url)
+      }}>Fetch!</button>
       </div>
     </div>
   )
