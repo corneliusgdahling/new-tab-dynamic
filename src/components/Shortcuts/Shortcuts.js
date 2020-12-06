@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import ShortcutCard from '../Shortcuts/ShortcutCard'
+import './Shortcuts.css'
 
 const Shortcuts = () => {
   const cards = JSON.parse(localStorage.getItem('cards'))
@@ -9,10 +10,10 @@ const Shortcuts = () => {
 
   return (
     <React.Fragment>
-      <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
+      <div className="container">
         {shortcutCards}
       </div>
-      <button onClick={() => setShortcutCards([...shortcutCards, <ShortcutCard index={shortcutCards.length} />])}>Add item</button>
+      <button className="addNewShortcut" onClick={() => setShortcutCards([...shortcutCards, <ShortcutCard index={shortcutCards.length} />])}>Add item</button>
     </React.Fragment>
   )
 }

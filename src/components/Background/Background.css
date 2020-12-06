@@ -10,6 +10,15 @@
   background-size: cover;
 }
 
-.input {
-  margin: 20px;
+.input, button {
+  margin: auto;
+  margin: 5px;
+  max-height: 40px;
+}
+
+.searchContainer {
+  position: absolute;
+  right: 10px;
+  top: 40px;
+  display: flex;
 }

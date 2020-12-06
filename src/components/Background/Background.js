@@ -34,11 +34,11 @@ export const Background = () => {
 return (
   <div className="gridContainer" style={{ backgroundImage: `url(${backgroundUrl})` }}>
     <Shortcuts />
-    <div>
+    <div className="searchContainer">
       <input className="input" type="text" onChange={e => setSearchTerm(e.target.value)} onKeyDown={async e => {
         if (e.key === 'Enter') setBackground(searchTerm)
       }} />
-      <button style={{ height: '40px', marginRight: '100px', marginTop: '400px' }} onClick={async () => setBackground(searchTerm)}>Fetch!</button>
+      <button onClick={async () => setBackground(searchTerm)}>Fetch!</button>
     </div>
   </div>
 )
