@@ -2,8 +2,11 @@ import React, { useState } from 'react'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { Card, CardActions, CardMedia, CardTitle } from 'material-ui/Card'
 import FlatButton from 'material-ui/FlatButton'
+import Button from '@material-ui/core/Button'
+import DeleteIcon from '@material-ui/icons/Delete'
 import Dialog from 'material-ui/Dialog'
 import TextField from 'material-ui/TextField'
+import './Shortcuts.css'
 
 const updateLocalStorage = (index, cardName, cardUrl, cardImageUrl) => {
   const card = {
@@ -30,7 +33,7 @@ const ShortcutCard = ({ index }) => {
   const card = cards && cards[index] ? cards[index] : {
     cardName: 'Undefined',
     cardUrl: 'chrome://newtab',
-    cardImageUrl:  'https://www.iconfinder.com/data/icons/huge-black-icons/512/Help.png'
+    cardImageUrl: 'https://www.iconfinder.com/data/icons/huge-black-icons/512/Help.png'
   }
 
   const [cardName, setCardName] = useState(card.cardName)
@@ -39,21 +42,32 @@ const ShortcutCard = ({ index }) => {
 
   const [editMode, setEditMode] = useState(false)
 
-  const actions = [
-    <FlatButton
-      label="Cancel"
-      primary
-      onClick={() => setEditMode(false)}
-    />,
-    <FlatButton
-      label="Submit"
-      primary
-      onClick={() => {
-        updateLocalStorage(index, cardName, cardUrl, cardImageUrl)
-        setEditMode(false)
-      }}
-    />,
-  ]
+  const actions = (
+    <div className="actionsContainer">
+      <Button
+      className="deleteButton"
+      style={{ marginRight: 'auto' }}
+        variant="contained"
+        color="secondary"
+        startIcon={<DeleteIcon />}
+      >
+        Delete
+      </Button>
+      <FlatButton
+        label="Cancel"
+        primary
+        onClick={() => setEditMode(false)}
+      />
+      <FlatButton
+        label="Submit"
+        primary
+        onClick={() => {
+          updateLocalStorage(index, cardName, cardUrl, cardImageUrl)
+          setEditMode(false)
+        }}
+      />
+    </div>
+  )
 
   return (
     <div style={{ width: '250px', margin: '20px 20px 20px 20px' }}>

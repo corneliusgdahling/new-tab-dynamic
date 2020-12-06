@@ -9,3 +9,11 @@
     right: 10px;
     top: 10px;
 }
+
+.actionsContainer {
+    display: flex;
+}
+
+.deleteButton {
+    margin-right: 'auto';
+}
