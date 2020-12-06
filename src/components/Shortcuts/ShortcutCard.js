@@ -1,41 +1,72 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { Card, CardActions, CardMedia, CardTitle } from 'material-ui/Card'
 import FlatButton from 'material-ui/FlatButton'
 import Dialog from 'material-ui/Dialog'
 import TextField from 'material-ui/TextField'
 
-const ShortcutCard = props => {
+const updateLocalStorage = (index, cardName, cardUrl, cardImageUrl) => {
+  const card = {
+    cardName,
+    cardUrl,
+    cardImageUrl
+  }
+  const cards = JSON.parse(localStorage.getItem(cards))
+
+  const newCards = cards ? cards[index] : [card]
+
+  localStorage.setItem('cards', JSON.stringify(newCards))
+}
+
+const ShortcutCard = ({ index }) => {
+  const cards = JSON.parse(localStorage.getItem('cards'))
+  const card = cards && cards[index] ? cards[index] : {
+    cardName: 'Undefined',
+    cardUrl: 'chrome://newtab',
+    cardImageUrl:  'https://www.iconfinder.com/data/icons/huge-black-icons/512/Help.png'
+  }
+
+  console.log({ card })
+
+  const [cardName, setCardName] = useState(card.cardName)
+  const [cardUrl, setCardUrl] = useState(card.cardUrl)
+  const [cardImageUrl, setCardImageUrl] = useState(card.cardImageUrl)
+
+  const [editMode, setEditMode] = useState(false)
+
   const actions = [
     <FlatButton
       label="Cancel"
       primary
-      onTouchTap={props.onClick}
+      onClick={() => setEditMode(false)}
     />,
     <FlatButton
-      className="TEST"
       label="Submit"
       primary
-      onTouchTap={props.handleSubmit}
+      onClick={() => {
+        updateLocalStorage(index, cardName, cardUrl, cardImageUrl)
+        setEditMode(false)
+      }}
     />,
   ]
+
   return (
-    <div style={{ width: '250px', margin: '20px 20px 20px 20px' }} id={props.key}>
+    <div style={{ width: '250px', margin: '20px 20px 20px 20px' }}>
       <MuiThemeProvider>
         <Card style={{ borderRadius: '15px' }}>
-          <a href={props.cardUrl}>
+          <a href={cardUrl}>
             <CardMedia
               overlay={
-                <CardTitle title={props.cardName} subtitle={props.cardUrl} />
+                <CardTitle title={cardName} subtitle={cardUrl} />
               }>
-              <img src={props.imageUrl} alt="" style={{ borderTopRightRadius: '15px', borderTopLeftRadius: '15px' }} />
+              <img src={cardImageUrl} alt="" style={{ borderTopRightRadius: '15px', borderTopLeftRadius: '15px' }} />
             </CardMedia>
           </a>
           <CardActions>
-            {!props.editMode &&
+            {!editMode &&
               <FlatButton
                 label="Edit"
-                onClick={props.onClick} />
+                onClick={() => setEditMode(true)} />
             }
           </CardActions>
         </Card>
@@ -45,26 +76,26 @@ const ShortcutCard = props => {
           title="Add or modify shortcut"
           modal
           actions={actions}
-          open={props.editMode}>
+          open={editMode}>
           <TextField
-            value={props.cardName === 'Undefined' ? '' : props.cardName}
+            value={cardName === 'Undefined' ? '' : cardName}
             floatingLabelText="Shortcut name"
             floatingLabelFixed
-            onChange={props.onChangeCardName}
-            />
-          <TextField
-            style={{ color: '#FFF' }}
-            value={props.cardUrl === 'chrome://newtab' ? '' : props.cardUrl}
-            floatingLabelText="Url (link/webpage) for shortcut"
-            floatingLabelFixed
-            onChange={props.onChangeCardUrl}
+            onChange={e => setCardName(e.target.value)}
           />
           <TextField
-            value={props.imageUrl === 'https://www.iconfinder.com/data/icons/huge-black-icons/512/Help.png' ? '' : props.imageUrl}
+            style={{ color: '#FFF' }}
+            value={cardUrl === 'chrome://newtab' ? '' : cardUrl}
+            floatingLabelText="Url (link/webpage) for shortcut"
+            floatingLabelFixed
+            onChange={e => setCardUrl(e.target.value)}
+          />
+          <TextField
+            value={cardImageUrl === 'https://www.iconfinder.com/data/icons/huge-black-icons/512/Help.png' ? '' : cardImageUrl}
             floatingLabelText="Url (link/webpage) for background image"
             floatingLabelFixed
             fullWidth
-            onChange={props.onChangeImageUrl}
+            onChange={e => setCardImageUrl(e.target.value)}
           />
         </Dialog>
       </MuiThemeProvider>
