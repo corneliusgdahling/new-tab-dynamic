@@ -11,11 +11,18 @@ const updateLocalStorage = (index, cardName, cardUrl, cardImageUrl) => {
     cardUrl,
     cardImageUrl
   }
-  const cards = JSON.parse(localStorage.getItem(cards))
+  const cards = JSON.parse(localStorage.getItem('cards')) || []
 
-  const newCards = cards ? cards[index] : [card]
 
-  localStorage.setItem('cards', JSON.stringify(newCards))
+  if (cards[index]) {
+    cards[index] = card
+  } else {
+    cards.push(card)
+  }
+
+  console.log(cards)
+
+  localStorage.setItem('cards', JSON.stringify(cards))
 }
 
 const ShortcutCard = ({ index }) => {
@@ -25,8 +32,6 @@ const ShortcutCard = ({ index }) => {
     cardUrl: 'chrome://newtab',
     cardImageUrl:  'https://www.iconfinder.com/data/icons/huge-black-icons/512/Help.png'
   }
-
-  console.log({ card })
 
   const [cardName, setCardName] = useState(card.cardName)
   const [cardUrl, setCardUrl] = useState(card.cardUrl)
