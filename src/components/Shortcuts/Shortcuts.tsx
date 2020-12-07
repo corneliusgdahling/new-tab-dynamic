@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import Fab from '@material-ui/core/Fab'
+import AddIcon from '@material-ui/icons/Add'
 import ShortcutCard from './ShortcutCard'
 import './Shortcuts.css'
 
@@ -8,15 +10,29 @@ const Shortcuts = () => {
 
   const indices = Array.from(Array(length).keys())
 
-  const [shortcutCards, setShortcutCards] = useState(indices.map(index => <ShortcutCard index={index} />))
+  const [shortcutCards, setShortcutCards] = useState(
+    indices.map((index) => <ShortcutCard index={index} />)
+  )
 
   return (
-    <React.Fragment>
-      <div className="container">
-        {shortcutCards}
+    <>
+      <div className="shortcuts">{shortcutCards}</div>
+      <div className="buttonContainer">
+      <Fab
+        color="primary"
+        aria-label="Add"
+        className="addNewShortcut"
+        onClick={() =>
+          setShortcutCards([
+            ...shortcutCards,
+            <ShortcutCard index={shortcutCards.length} />,
+          ])
+        }
+      >
+        <AddIcon />
+      </Fab>
       </div>
-      <button className="addNewShortcut" onClick={() => setShortcutCards([...shortcutCards, <ShortcutCard index={shortcutCards.length} />])}>Add item</button>
-    </React.Fragment>
+    </>
   )
 }
 export default Shortcuts

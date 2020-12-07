@@ -1,10 +1,10 @@
-.container {
+.shortcuts {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
 }
 
-.addNewShortcut {
+.buttonContainer {
     position: absolute;
     right: 10px;
     top: 10px;

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Backdrop from '@material-ui/core/Backdrop'
 import './Background.css'
 
 const URL = 'https://pixabay.com/api/?key=5546451-397d91c91b993dc32692557b3&q='
@@ -30,6 +31,8 @@ export const Background: React.FC<BackgroundInterface> = ({ children }) => {
     localStorage.getItem('backgroundUrl') || ''
   )
 
+  const [editBackground, setEditBackground] = useState(false)
+
   const setBackground = async (searchTerm: string) => {
     const url = await getBackgroundUrl(searchTerm)
     setBackgroundUrl(url)
@@ -43,19 +46,33 @@ export const Background: React.FC<BackgroundInterface> = ({ children }) => {
         style={{ backgroundImage: `url(${backgroundUrl})` }}
       />
       <div className="searchContainer">
+        {
+          <button onClick={() => setEditBackground(!editBackground)}>
+            {editBackground ? 'Close' : 'Picture'}
+          </button>
+        }
+      </div>
+
+      {/* <div
+        className={`overlay ${editBackground ? 'showOverlay' : 'hideOverlay'}`}
+      > */}
+      <Backdrop open={editBackground} transitionDuration={500}>
         <input
           className="input"
-          type="text"
+          placeholder="Søkeord"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setSearchTerm(e.target.value)
           }
           onKeyDown={async (e) => {
             if (e.key === 'Enter') setBackground(searchTerm)
+            else if (e.key === 'Escape') setEditBackground(false)
           }}
+          autoFocus
+          value={searchTerm}
         />
-        <button onClick={async () => setBackground(searchTerm)}>Fetch!</button>
-      </div>
-      {children}
+      </Backdrop>
+      {/* </div> */}
+      <>{!editBackground && children}</>
     </>
   )
 }
