@@ -28,6 +28,21 @@ const updateLocalStorage = (index, cardName, cardUrl, cardImageUrl) => {
   localStorage.setItem('cards', JSON.stringify(cards))
 }
 
+const deleteCard = (index, cardName, cardUrl, cardImageUrl) => {
+  const card = {
+    cardName,
+    cardUrl,
+    cardImageUrl
+  }
+  const cards = JSON.parse(localStorage.getItem('cards')) || []
+
+  if (cards[index]) {
+    cards.splice(index, 1);
+  }
+  
+  localStorage.setItem('cards', JSON.stringify(cards))
+}
+
 const ShortcutCard = ({ index }) => {
   const cards = JSON.parse(localStorage.getItem('cards'))
   const card = cards && cards[index] ? cards[index] : {
@@ -42,14 +57,20 @@ const ShortcutCard = ({ index }) => {
 
   const [editMode, setEditMode] = useState(false)
 
+  const [isDeleted, setIsDeleted] = useState(false)
+
   const actions = (
     <div className="actionsContainer">
       <Button
-      className="deleteButton"
-      style={{ marginRight: 'auto' }}
+        className="deleteButton"
+        style={{ marginRight: 'auto' }}
         variant="contained"
         color="secondary"
         startIcon={<DeleteIcon />}
+        onClick={() => {
+          deleteCard(index, cardName, cardUrl, cardImageUrl)
+          setIsDeleted(true)
+        }}
       >
         Delete
       </Button>
@@ -69,7 +90,7 @@ const ShortcutCard = ({ index }) => {
     </div>
   )
 
-  return (
+  return isDeleted ? null : (
     <div style={{ width: '250px', margin: '20px 20px 20px 20px' }}>
       <MuiThemeProvider>
         <Card style={{ borderRadius: '15px' }}>
