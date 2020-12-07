@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Shortcuts from '../Shortcuts/Shortcuts'
 import './Background.css'
 
 const URL = 'https://pixabay.com/api/?key=5546451-397d91c91b993dc32692557b3&q='
@@ -21,25 +20,43 @@ const getBackgroundUrl = async (searchTerm: string) => {
   return url
 }
 
-export const Background = () => {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [backgroundUrl, setBackgroundUrl] = useState(localStorage.getItem('backgroundUrl') || '')
-
-  const setBackground = async (searchTerm: string) => {
-  const url = await getBackgroundUrl(searchTerm)
-  setBackgroundUrl(url)
-  localStorage.setItem('backgroundUrl', url)
+interface BackgroundInterface {
+  children: React.ReactNode
 }
 
-return (
-  <div className="gridContainer" style={{ backgroundImage: `url(${backgroundUrl})` }}>
-    <Shortcuts />
-    <div className="searchContainer">
-      <input className="input" type="text" onChange={e => setSearchTerm(e.target.value)} onKeyDown={async e => {
-        if (e.key === 'Enter') setBackground(searchTerm)
-      }} />
-      <button onClick={async () => setBackground(searchTerm)}>Fetch!</button>
-    </div>
-  </div>
-)
+export const Background: React.FC<BackgroundInterface> = ({ children }) => {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [backgroundUrl, setBackgroundUrl] = useState(
+    localStorage.getItem('backgroundUrl') || ''
+  )
+
+  const setBackground = async (searchTerm: string) => {
+    const url = await getBackgroundUrl(searchTerm)
+    setBackgroundUrl(url)
+    localStorage.setItem('backgroundUrl', url)
+  }
+
+  return (
+    <>
+      <div
+        className="background"
+        style={{ backgroundImage: `url(${backgroundUrl})` }}
+      >
+        <div className="searchContainer">
+          <input
+            className="input"
+            type="text"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+            onKeyDown={async (e) => {
+              if (e.key === 'Enter') setBackground(searchTerm)
+            }}
+          />
+          <button onClick={async () => setBackground(searchTerm)}>
+            Fetch!
+          </button>
+        </div>
+      </div>
+      {children}
+    </>
+  )
 }
