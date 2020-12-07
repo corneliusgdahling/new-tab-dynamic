@@ -8,14 +8,18 @@ import Dialog from 'material-ui/Dialog'
 import TextField from 'material-ui/TextField'
 import './Shortcuts.css'
 
-const updateLocalStorage = (index: number, cardName: string, cardUrl: string, cardImageUrl: string) => {
+const updateLocalStorage = (
+  index: number,
+  cardName: string,
+  cardUrl: string,
+  cardImageUrl: string
+) => {
   const card = {
     cardName,
     cardUrl,
-    cardImageUrl
+    cardImageUrl,
   }
   const cards = JSON.parse(localStorage.getItem('cards') || '') || []
-
 
   if (cards[index]) {
     cards[index] = card
@@ -28,19 +32,35 @@ const updateLocalStorage = (index: number, cardName: string, cardUrl: string, ca
   localStorage.setItem('cards', JSON.stringify(cards))
 }
 
-const deleteCard = (index: number, cardName: string, cardUrl: string, cardImageUrl: string) => {
+const deleteCard = (
+  index: number,
+  cardName: string,
+  cardUrl: string,
+  cardImageUrl: string
+) => {
   const card = {
     cardName,
     cardUrl,
-    cardImageUrl
+    cardImageUrl,
   }
   const cards = JSON.parse(localStorage.getItem('cards') || '') || []
 
   if (cards[index]) {
-    cards.splice(index, 1);
+    cards.splice(index, 1)
   }
 
   localStorage.setItem('cards', JSON.stringify(cards))
+}
+
+const publish = (
+  index: number,
+  cardName: string,
+  cardUrl: string,
+  cardImageUrl: string,
+  setEditMode: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  updateLocalStorage(index, cardName, cardUrl, cardImageUrl)
+  setEditMode(false)
 }
 
 interface ShortcutCardInterface {
@@ -49,11 +69,15 @@ interface ShortcutCardInterface {
 
 const ShortcutCard: React.FC<ShortcutCardInterface> = ({ index }) => {
   const cards = JSON.parse(localStorage.getItem('cards') || '')
-  const card = cards && cards[index] ? cards[index] : {
-    cardName: 'Undefined',
-    cardUrl: 'chrome://newtab',
-    cardImageUrl: 'https://www.iconfinder.com/data/icons/huge-black-icons/512/Help.png'
-  }
+  const card =
+    cards && cards[index]
+      ? cards[index]
+      : {
+          cardName: 'Undefined',
+          cardUrl: 'chrome://newtab',
+          cardImageUrl:
+            'https://www.iconfinder.com/data/icons/huge-black-icons/512/Help.png',
+        }
 
   const [cardName, setCardName] = useState(card.cardName)
   const [cardUrl, setCardUrl] = useState(card.cardUrl)
@@ -78,11 +102,7 @@ const ShortcutCard: React.FC<ShortcutCardInterface> = ({ index }) => {
       >
         Delete
       </Button>
-      <FlatButton
-        label="Cancel"
-        primary
-        onClick={() => setEditMode(false)}
-      />
+      <FlatButton label="Cancel" primary onClick={() => setEditMode(false)} />
       <FlatButton
         label="Submit"
         primary
@@ -91,7 +111,7 @@ const ShortcutCard: React.FC<ShortcutCardInterface> = ({ index }) => {
           setEditMode(false)
         }}
       />
-    </div>
+    </div>,
   ]
 
   return isDeleted ? null : (
@@ -100,18 +120,22 @@ const ShortcutCard: React.FC<ShortcutCardInterface> = ({ index }) => {
         <Card style={{ borderRadius: '15px' }}>
           <a href={cardUrl}>
             <CardMedia
-              overlay={
-                <CardTitle title={cardName} subtitle={cardUrl} />
-              }>
-              <img src={cardImageUrl} alt="" style={{ borderTopRightRadius: '15px', borderTopLeftRadius: '15px' }} />
+              overlay={<CardTitle title={cardName} subtitle={cardUrl} />}
+            >
+              <img
+                src={cardImageUrl}
+                alt=""
+                style={{
+                  borderTopRightRadius: '15px',
+                  borderTopLeftRadius: '15px',
+                }}
+              />
             </CardMedia>
           </a>
           <CardActions>
-            {!editMode &&
-              <FlatButton
-                label="Edit"
-                onClick={() => setEditMode(true)} />
-            }
+            {!editMode && (
+              <FlatButton label="Edit" onClick={() => setEditMode(true)} />
+            )}
           </CardActions>
         </Card>
       </MuiThemeProvider>
@@ -120,26 +144,51 @@ const ShortcutCard: React.FC<ShortcutCardInterface> = ({ index }) => {
           title="Add or modify shortcut"
           modal
           actions={actions}
-          open={editMode}>
+          open={editMode}
+        >
           <TextField
+            autoFocus
             value={cardName === 'Undefined' ? '' : cardName}
             floatingLabelText="Shortcut name"
             floatingLabelFixed
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCardName(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setCardName(e.target.value)
+            }
+            onKeyDown={(e) => {
+              if (e.key === 'Enter')
+                publish(index, cardName, cardUrl, cardImageUrl, setEditMode)
+            }}
           />
           <TextField
             style={{ color: '#FFF' }}
             value={cardUrl === 'chrome://newtab' ? '' : cardUrl}
             floatingLabelText="Url (link/webpage) for shortcut"
             floatingLabelFixed
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCardUrl(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setCardUrl(e.target.value)
+            }
+            onKeyDown={(e) => {
+              if (e.key === 'Enter')
+                publish(index, cardName, cardUrl, cardImageUrl, setEditMode)
+            }}
           />
           <TextField
-            value={cardImageUrl === 'https://www.iconfinder.com/data/icons/huge-black-icons/512/Help.png' ? '' : cardImageUrl}
+            value={
+              cardImageUrl ===
+              'https://www.iconfinder.com/data/icons/huge-black-icons/512/Help.png'
+                ? ''
+                : cardImageUrl
+            }
             floatingLabelText="Url (link/webpage) for background image"
             floatingLabelFixed
             fullWidth
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCardImageUrl(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter')
+                publish(index, cardName, cardUrl, cardImageUrl, setEditMode)
+            }}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setCardImageUrl(e.target.value)
+            }
           />
         </Dialog>
       </MuiThemeProvider>
