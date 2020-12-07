@@ -6,7 +6,7 @@ const URL = 'https://pixabay.com/api/?key=5546451-397d91c91b993dc32692557b3&q='
 
 const URL_CONFIG = '&image_type=photo&pretty=true'
 
-const getBackgroundUrl = async searchTerm => {
+const getBackgroundUrl = async (searchTerm: string) => {
   const response = await fetch(URL + searchTerm + URL_CONFIG, {
     method: 'GET',
     mode: 'cors',
@@ -25,7 +25,7 @@ export const Background = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [backgroundUrl, setBackgroundUrl] = useState(localStorage.getItem('backgroundUrl') || '')
 
-  const setBackground = async searchTerm => {
+  const setBackground = async (searchTerm: string) => {
   const url = await getBackgroundUrl(searchTerm)
   setBackgroundUrl(url)
   localStorage.setItem('backgroundUrl', url)

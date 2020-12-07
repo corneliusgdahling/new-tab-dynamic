@@ -8,13 +8,13 @@ import Dialog from 'material-ui/Dialog'
 import TextField from 'material-ui/TextField'
 import './Shortcuts.css'
 
-const updateLocalStorage = (index, cardName, cardUrl, cardImageUrl) => {
+const updateLocalStorage = (index: number, cardName: string, cardUrl: string, cardImageUrl: string) => {
   const card = {
     cardName,
     cardUrl,
     cardImageUrl
   }
-  const cards = JSON.parse(localStorage.getItem('cards')) || []
+  const cards = JSON.parse(localStorage.getItem('cards') || '') || []
 
 
   if (cards[index]) {
@@ -28,23 +28,27 @@ const updateLocalStorage = (index, cardName, cardUrl, cardImageUrl) => {
   localStorage.setItem('cards', JSON.stringify(cards))
 }
 
-const deleteCard = (index, cardName, cardUrl, cardImageUrl) => {
+const deleteCard = (index: number, cardName: string, cardUrl: string, cardImageUrl: string) => {
   const card = {
     cardName,
     cardUrl,
     cardImageUrl
   }
-  const cards = JSON.parse(localStorage.getItem('cards')) || []
+  const cards = JSON.parse(localStorage.getItem('cards') || '') || []
 
   if (cards[index]) {
     cards.splice(index, 1);
   }
-  
+
   localStorage.setItem('cards', JSON.stringify(cards))
 }
 
-const ShortcutCard = ({ index }) => {
-  const cards = JSON.parse(localStorage.getItem('cards'))
+interface ShortcutCardInterface {
+  index: number
+}
+
+const ShortcutCard: React.FC<ShortcutCardInterface> = ({ index }) => {
+  const cards = JSON.parse(localStorage.getItem('cards') || '')
   const card = cards && cards[index] ? cards[index] : {
     cardName: 'Undefined',
     cardUrl: 'chrome://newtab',
@@ -59,7 +63,7 @@ const ShortcutCard = ({ index }) => {
 
   const [isDeleted, setIsDeleted] = useState(false)
 
-  const actions = (
+  const actions = [
     <div className="actionsContainer">
       <Button
         className="deleteButton"
@@ -88,7 +92,7 @@ const ShortcutCard = ({ index }) => {
         }}
       />
     </div>
-  )
+  ]
 
   return isDeleted ? null : (
     <div style={{ width: '250px', margin: '20px 20px 20px 20px' }}>
@@ -121,21 +125,21 @@ const ShortcutCard = ({ index }) => {
             value={cardName === 'Undefined' ? '' : cardName}
             floatingLabelText="Shortcut name"
             floatingLabelFixed
-            onChange={e => setCardName(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCardName(e.target.value)}
           />
           <TextField
             style={{ color: '#FFF' }}
             value={cardUrl === 'chrome://newtab' ? '' : cardUrl}
             floatingLabelText="Url (link/webpage) for shortcut"
             floatingLabelFixed
-            onChange={e => setCardUrl(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCardUrl(e.target.value)}
           />
           <TextField
             value={cardImageUrl === 'https://www.iconfinder.com/data/icons/huge-black-icons/512/Help.png' ? '' : cardImageUrl}
             floatingLabelText="Url (link/webpage) for background image"
             floatingLabelFixed
             fullWidth
-            onChange={e => setCardImageUrl(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCardImageUrl(e.target.value)}
           />
         </Dialog>
       </MuiThemeProvider>
