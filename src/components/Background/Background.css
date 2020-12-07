@@ -22,4 +22,5 @@
   right: 10px;
   top: 40px;
   display: flex;
+  z-index: 1;
 }

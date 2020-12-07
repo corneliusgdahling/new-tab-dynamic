@@ -41,20 +41,19 @@ export const Background: React.FC<BackgroundInterface> = ({ children }) => {
       <div
         className="background"
         style={{ backgroundImage: `url(${backgroundUrl})` }}
-      >
-        <div className="searchContainer">
-          <input
-            className="input"
-            type="text"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
-            onKeyDown={async (e) => {
-              if (e.key === 'Enter') setBackground(searchTerm)
-            }}
-          />
-          <button onClick={async () => setBackground(searchTerm)}>
-            Fetch!
-          </button>
-        </div>
+      />
+      <div className="searchContainer">
+        <input
+          className="input"
+          type="text"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setSearchTerm(e.target.value)
+          }
+          onKeyDown={async (e) => {
+            if (e.key === 'Enter') setBackground(searchTerm)
+          }}
+        />
+        <button onClick={async () => setBackground(searchTerm)}>Fetch!</button>
       </div>
       {children}
     </>
