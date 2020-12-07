@@ -70,7 +70,7 @@ interface ShortcutCardInterface {
 const ShortcutCard: React.FC<ShortcutCardInterface> = ({ index }) => {
   const cards = JSON.parse(localStorage.getItem('cards') || '')
   const card =
-    cards && cards[index]
+    cards?.[index]
       ? cards[index]
       : {
           cardName: 'Undefined',
