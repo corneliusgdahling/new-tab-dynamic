@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Backdrop from '@material-ui/core/Backdrop'
+import Fab from '@material-ui/core/Fab'
+import ImageSearchIcon from '@material-ui/icons/ImageSearch'
+import CloseIcon from '@material-ui/icons/Close'
 import './Background.css'
 
 const URL = 'https://pixabay.com/api/?key=5546451-397d91c91b993dc32692557b3&q='
@@ -51,12 +54,11 @@ export const Background: React.FC<BackgroundInterface> = ({ children }) => {
         className="background"
         style={{ backgroundImage: `url(${backgroundUrl})` }}
       />
-      <button
-        className="editBackgroundButton"
-        onClick={() => setEditBackground(!editBackground)}
-      >
-        {editBackground ? 'Close' : 'Picture'}
-      </button>
+      <div className="editBackgroundButton">
+      <Fab onClick={() => setEditBackground(!editBackground)}>
+        {editBackground ? <CloseIcon /> : <ImageSearchIcon />}
+      </Fab>
+      </div>
       <Backdrop open={editBackground} transitionDuration={500}>
         <input
           ref={inputRef}
