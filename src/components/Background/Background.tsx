@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Backdrop from '@material-ui/core/Backdrop'
 import './Background.css'
 
@@ -33,11 +33,17 @@ export const Background: React.FC<BackgroundInterface> = ({ children }) => {
 
   const [editBackground, setEditBackground] = useState(false)
 
+  const inputRef = useRef<HTMLInputElement>(null)
+
   const setBackground = async (searchTerm: string) => {
     const url = await getBackgroundUrl(searchTerm)
     setBackgroundUrl(url)
     localStorage.setItem('backgroundUrl', url)
   }
+
+  useEffect(() => {
+    if (editBackground && inputRef?.current) inputRef.current.focus()
+  }, [editBackground, inputRef])
 
   return (
     <>
@@ -45,11 +51,15 @@ export const Background: React.FC<BackgroundInterface> = ({ children }) => {
         className="background"
         style={{ backgroundImage: `url(${backgroundUrl})` }}
       />
-        <button className='editBackgroundButton' onClick={() => setEditBackground(!editBackground)}>
-          {editBackground ? 'Close' : 'Picture'}
-        </button>
+      <button
+        className="editBackgroundButton"
+        onClick={() => setEditBackground(!editBackground)}
+      >
+        {editBackground ? 'Close' : 'Picture'}
+      </button>
       <Backdrop open={editBackground} transitionDuration={500}>
         <input
+          ref={inputRef}
           className="input"
           placeholder="Søkeord"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -59,7 +69,6 @@ export const Background: React.FC<BackgroundInterface> = ({ children }) => {
             if (e.key === 'Enter') setBackground(searchTerm)
             else if (e.key === 'Escape') setEditBackground(false)
           }}
-          autoFocus
           value={searchTerm}
         />
       </Backdrop>
