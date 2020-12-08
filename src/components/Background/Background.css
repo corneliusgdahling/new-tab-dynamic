@@ -11,17 +11,10 @@
   z-index: -1;
 }
 
-button {
-  margin: auto;
-  margin: 5px;
-  max-height: 40px;
-}
-
-.searchContainer {
+.editBackgroundButton {
   position: absolute;
   right: 10px;
-  top: 40px;
-  display: flex;
+  top: 100px;
   z-index: 1;
 }
 

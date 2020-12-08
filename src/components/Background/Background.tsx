@@ -45,17 +45,9 @@ export const Background: React.FC<BackgroundInterface> = ({ children }) => {
         className="background"
         style={{ backgroundImage: `url(${backgroundUrl})` }}
       />
-      <div className="searchContainer">
-        {
-          <button onClick={() => setEditBackground(!editBackground)}>
-            {editBackground ? 'Close' : 'Picture'}
-          </button>
-        }
-      </div>
-
-      {/* <div
-        className={`overlay ${editBackground ? 'showOverlay' : 'hideOverlay'}`}
-      > */}
+        <button className='editBackgroundButton' onClick={() => setEditBackground(!editBackground)}>
+          {editBackground ? 'Close' : 'Picture'}
+        </button>
       <Backdrop open={editBackground} transitionDuration={500}>
         <input
           className="input"
@@ -71,7 +63,6 @@ export const Background: React.FC<BackgroundInterface> = ({ children }) => {
           value={searchTerm}
         />
       </Backdrop>
-      {/* </div> */}
       <>{!editBackground && children}</>
     </>
   )
