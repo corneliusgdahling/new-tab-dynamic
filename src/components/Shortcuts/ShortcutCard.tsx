@@ -19,15 +19,16 @@ const updateLocalStorage = (
     cardUrl,
     cardImageUrl,
   }
-  const cards = JSON.parse(localStorage.getItem('cards') || '') || []
+  const cards = localStorage.getItem('cards')
+  //@ts-ignore-next-line
+    ? JSON.parse(localStorage.getItem('cards'))
+    : []
 
   if (cards[index]) {
     cards[index] = card
   } else {
     cards.push(card)
   }
-
-  console.log(cards)
 
   localStorage.setItem('cards', JSON.stringify(cards))
 }
@@ -43,7 +44,10 @@ const deleteCard = (
     cardUrl,
     cardImageUrl,
   }
-  const cards = JSON.parse(localStorage.getItem('cards') || '') || []
+  const cards = localStorage.getItem('cards')
+    ? // @ts-ignore-next-line
+      JSON.parse(localStorage.getItem('cards'))
+    : []
 
   if (cards[index]) {
     cards.splice(index, 1)
@@ -68,16 +72,19 @@ interface ShortcutCardInterface {
 }
 
 const ShortcutCard: React.FC<ShortcutCardInterface> = ({ index }) => {
-  const cards = JSON.parse(localStorage.getItem('cards') || '')
-  const card =
-    cards?.[index]
-      ? cards[index]
-      : {
-          cardName: 'Undefined',
-          cardUrl: 'chrome://newtab',
-          cardImageUrl:
-            'https://www.iconfinder.com/data/icons/huge-black-icons/512/Help.png',
-        }
+  console.log('hei')
+  const cards = localStorage.getItem('cards')
+  // @ts-ignore-next-line
+  ? JSON.parse(localStorage.getItem('cards'))
+    : []
+  const card = cards?.[index]
+    ? cards[index]
+    : {
+        cardName: 'Undefined',
+        cardUrl: 'chrome://newtab',
+        cardImageUrl:
+          'https://www.iconfinder.com/data/icons/huge-black-icons/512/Help.png',
+      }
 
   const [cardName, setCardName] = useState(card.cardName)
   const [cardUrl, setCardUrl] = useState(card.cardUrl)
