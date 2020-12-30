@@ -7,7 +7,7 @@ import './Background.css'
 
 const URL = 'https://pixabay.com/api/?key=5546451-397d91c91b993dc32692557b3&q='
 
-const URL_CONFIG = '&image_type=photo&pretty=true'
+const URL_CONFIG = '&image_type=photo'
 
 const getBackgroundUrl = async (searchTerm: string) => {
   const response = await fetch(URL + searchTerm + URL_CONFIG, {
@@ -20,7 +20,7 @@ const getBackgroundUrl = async (searchTerm: string) => {
   if (!results.hits[Math.round(randNum > 0 ? randNum : 0)]) {
     return
   }
-  const url = results.hits[Math.round(randNum > 0 ? randNum : 0)].webformatURL
+  const url = results.hits[Math.round(randNum > 0 ? randNum : 0)].largeImageURL
   return url
 }
 
@@ -55,9 +55,9 @@ export const Background: React.FC<BackgroundInterface> = ({ children }) => {
         style={{ backgroundImage: `url(${backgroundUrl})` }}
       />
       <div className="editBackgroundButton">
-      <Fab onClick={() => setEditBackground(!editBackground)}>
-        {editBackground ? <CloseIcon /> : <ImageSearchIcon />}
-      </Fab>
+        <Fab onClick={() => setEditBackground(!editBackground)}>
+          {editBackground ? <CloseIcon /> : <ImageSearchIcon />}
+        </Fab>
       </div>
       <Backdrop open={editBackground} transitionDuration={500}>
         <input
