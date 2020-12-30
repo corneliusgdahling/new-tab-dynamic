@@ -18,8 +18,28 @@
   z-index: 1;
 }
 
+.backgroundSelector {
+  display: flex;
+  flex-direction: column;
+}
+
+.backgroundIncrementContainer {
+  display: flex;
+}
+
+.backgroundIncrement {
+  margin: auto;
+}
+
+.pageNumber {
+  color: #FFF;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
 .input {
-  width: 30%;
   height: 3%;
   font-size: 40px;
   padding: 20px;
