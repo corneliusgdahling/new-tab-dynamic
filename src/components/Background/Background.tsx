@@ -88,8 +88,10 @@ export const Background: React.FC<BackgroundInterface> = ({ children }) => {
               setSearchTerm(e.target.value)
             }}
             onKeyDown={async (e) => {
-              if (e.key === 'Enter')
-                setBackground(searchTerm) && setResultNumber(1)
+              if (e.key === 'Enter') {
+                setBackground(searchTerm)
+                setResultNumber(1)
+              }
               else if (e.key === 'Escape') setEditBackground(false)
             }}
             value={searchTerm}

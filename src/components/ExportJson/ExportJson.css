@@ -1,0 +1,30 @@
+.show_export_button {
+    position: absolute;
+    right: 0;
+    top: 120px;
+    z-index: 1;
+}
+
+.json_content {
+    margin-bottom: 20px;
+}
+
+.download_ref {
+    color: black;
+}
+
+.upload_container {
+    height: 200px;
+    margin: 0 30px;
+    background-color: rgb(211, 211, 211);
+    cursor: pointer;
+    border-style: dashed;
+    color: #286174;
+    display: flex;
+}
+
+.upload {
+    margin: auto;
+    display: flex;
+}
+

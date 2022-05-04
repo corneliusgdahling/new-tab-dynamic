@@ -1,21 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import ShortcutCard from './ShortcutCard'
 import './Shortcuts.css'
+import ShortcutsContext from '../App/ShortcutsContext'
 
-const Shortcuts = () => {
-  const cards = localStorage.getItem('cards')
-  // @ts-ignore-next-line
-    ? JSON.parse(localStorage.getItem('cards'))
-    : []
-  const length = cards ? cards.length : 1
+const Shortcuts = (): JSX.Element => {
+  const { shortcuts, addShortcut } = useContext(ShortcutsContext)
 
-  const indices = Array.from(Array(length).keys())
-
-  const [shortcutCards, setShortcutCards] = useState(
-    indices.map((index) => <ShortcutCard index={index} />)
-  )
+  const shortcutCards = shortcuts.map((_, index) => <ShortcutCard index={index} />)
 
   return (
     <>
@@ -26,10 +19,7 @@ const Shortcuts = () => {
           aria-label="Add"
           className="addNewShortcut"
           onClick={() =>
-            setShortcutCards([
-              ...shortcutCards,
-              <ShortcutCard index={shortcutCards.length} />,
-            ])
+            addShortcut()
           }
         >
           <AddIcon />
