@@ -107,7 +107,7 @@ const ShortcutCard: React.FC<ShortcutCardInterface> = ({
         <Card className="card">
           <a href={cardUrl}>
             <CardMedia
-              overlay={<CardTitle title={cardName} subtitle={cardUrl} />}
+              overlay={<CardTitle title={cardName} subtitle={cardUrl.length < 30 ? cardUrl : `${cardUrl.substring(0, 27)}...`} />}
             >
               <img src={cardImageUrl} alt="" className="card_media" />
             </CardMedia>
