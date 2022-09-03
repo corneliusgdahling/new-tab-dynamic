@@ -76,3 +76,5 @@ $RECYCLE.BIN/
 .atomignore
 
 .eslintcache
+
+ENVIRONMENT.tsx

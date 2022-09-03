@@ -6,28 +6,27 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft'
 import CloseIcon from '@material-ui/icons/Close'
 import './Background.css'
+import { ACCESS_KEY } from './ENVIRONMENT'
 
-const URL = 'https://pixabay.com/api/?key=5546451-397d91c91b993dc32692557b3&q='
+const URL = `https://api.unsplash.com/search/photos?client_id=${ACCESS_KEY}`
 
-const URL_CONFIG = '&image_type=photo'
-
-const getImageUrl = (searchTerm: string, page = 1) => {
-  return `${URL}${searchTerm}${URL_CONFIG}&page=${page}`
+const getImageUrl = (searchTerm: string, page = 1): string => {
+  return `${URL}&page=${page}&query=${searchTerm}`
 }
 
 const getBackgroundUrl = async (searchTerm: string, resultNumber = 0) => {
   const resultNumberToUse = resultNumber - 1 > 0 ? resultNumber : 0
-  const page = Math.floor(resultNumberToUse / 20) + 1
-  const imageUrl = getImageUrl(searchTerm, page)
+  const page = Math.floor(resultNumberToUse / 10)
+  const imageUrl = getImageUrl(searchTerm, page,)
   const response = await fetch(imageUrl, {
     method: 'GET',
     mode: 'cors',
   })
   if (!response.ok) throw Error()
   const results = await response.json()
-  if (resultNumberToUse >= results.totalHits) return
-  const resultOnPage = resultNumberToUse % 20
-  const url = results.hits[resultOnPage].largeImageURL
+  if (resultNumberToUse + page * 10 >= results.total) return
+  const resultOnPage = resultNumberToUse - page * 10
+  const url = results.results[resultOnPage].urls.full
   return url
 }
 
